@@ -1,44 +1,55 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import MapView, { Marker } from "react-native-maps";
+import { StyleSheet, Dimensions } from 'react-native';
 import * as Permissions from 'expo-permissions';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { DestinationContainer, OriginContainer, RouteContainer } from "./src/containers";
 
-import * as Location from 'expo-location';
 
+export const AppContext = React.createContext({
+  origin: {},
+  destination: {},
+  mode: ""
+});
+
+
+const AppNavigator = createStackNavigator({
+  Origin: {
+    screen: () => <OriginContainer/>,
+  },
+  Destination: {
+    screen: () => <DestinationContainer/>
+  },
+  Map: {
+    screen: () => <RouteContainer/>
+  }
+}, {initialRouteName: "Origin"});
+
+const AppContainer = createAppContainer(AppNavigator);
 
 export default function App() {
-  const [location, setLocation] = useState({lat:37.78825, long: -122.4324})
-
-  useEffect(async() => {
+  const loadLocationPermissions = async() => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
-      await Permissions.askAsync(Permissions.LOCATION);
+      return Permissions.askAsync(Permissions.LOCATION);
     }
-    let loc = await Location.getCurrentPositionAsync({});
-    setLocation({lat: loc.coords.latitude, long: loc.coords.longitude})
-  },[location])
+  };
+
+  useEffect(() => {
+    const checkLocationPermissions = async() => {
+      await loadLocationPermissions();
+    };
+    return () => checkLocationPermissions();
+  },[]);
 
   return (
-    <View style={styles.container}>
-      <Text>Map</Text>
-      <MapView 
-        region={{
-          latitude: location.lat,
-          longitude: location.long,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
-        style={styles.mapStyle}
-        >
-        <Marker
-          coordinate={{
-            latitude: location.lat,
-            longitude: location.long
-          }}
-          pinColor="blue"
-          />
-        </MapView>
-    </View>
+      <AppContext.Provider value={{
+        origin: {},
+        destination: {},
+        mode: ""
+      }}>
+        <AppContainer/>
+      </AppContext.Provider>
   );
 }
 
@@ -47,7 +58,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   mapStyle: {
     width: Dimensions.get('window').width,
