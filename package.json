@@ -5,22 +5,46 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "node_modules/.bin/jest",
+    "mocha": "./node_modules/.bin/mocha --require @babel/register src/**/tests/*.js"
   },
   "dependencies": {
+    "@babel/register": "^7.8.3",
+    "@react-native-community/masked-view": "^0.1.5",
     "expo": "~36.0.0",
     "expo-constants": "^8.0.0",
     "expo-location": "^8.0.0",
     "expo-permissions": "^8.0.0",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
+    "opencage-api-client": "^0.5.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native-autocomplete-input": "^4.1.0",
+    "react-native-dotenv": "^0.2.0",
+    "react-native-gesture-handler": "~1.5.0",
     "react-native-maps": "0.26.1",
-    "react-native-web": "~0.11.7"
+    "react-native-reanimated": "~1.4.0",
+    "react-native-safe-area-context": "0.6.0",
+    "react-native-screens": "2.0.0-alpha.12",
+    "react-native-web": "~0.11.7",
+    "react-navigation": "^4.1.0",
+    "react-navigation-stack": "^2.0.16",
+    "react-test-renderer": "^16.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "babel-preset-expo": "~8.0.0"
+    "babel-jest": "^25.1.0",
+    "jest-expo": "^36.0.1",
+    "metro-react-native-babel-preset": "^0.58.0",
+    "mocha": "^7.0.1",
+    "proxyquire": "^2.1.3",
+    "react-native-mock": "^0.3.1",
+    "sinon": "^8.1.1"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": []
+  }
 }
