@@ -1,30 +1,46 @@
-import React from "react";
-import {View, Text, StyleSheet, Dimensions, Button} from "react-native";
-import {styles as custom} from "./origin";
-import MapView, {Marker} from "react-native-maps";
+import React, { useRef, useEffect } from "react";
+import {View, Text, StyleSheet, Dimensions, Button, ActivityIndicator} from "react-native";
+import { styles as custom } from "./origin";
+import MapView, { Marker, Polyline } from "react-native-maps";
 
 
-export const RoutePresenter = ({navigation, initialRegion, mode, setMode, destination, origin}) => {
+export const RoutePresenter = ({ mode, setMode, destination, origin, coordinates, loading, error}) => {
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if(ref && ref.current) {
+            setTimeout(() => {
+                ref.current.fitToCoordinates([
+                    { latitude: destination.geometry.lat, longitude: destination.geometry.lng },
+                    { latitude: origin.geometry.lat, longitude: origin.geometry.lng }
+                ], {edgePadding: { top: 70, right: 70, bottom: 70, left: 70}});
+            },400)
+
+        }
+    }, [ref]);
+
     return (
         <View styles={custom.container}>
-            <Button color="red" onPress={() => navigation.navigate("Destination")} title={"< Destination"}/>
             <MapView
+                ref={ref}
                 style={styles.mapStyle}
-                initialRegion={{
-                    ...initialRegion,
-                    latitudeDelta: 0.015,
-                    longitudeDelta: 0.0121,
-                }}
                 showsUserLocation={true}
-                >
+             >
                 <Marker
                     coordinate={{
                         latitude: destination.geometry.lat,
                         longitude: destination.geometry.lng
-
                     }}
                     pinColor="red"
                 />
+
+                { coordinates.length > 0 &&
+                <Polyline
+                    coordinates={[...coordinates]}
+                    strokeColor="blue"
+                    strokeWidth={3}
+                />
+                }
                 <Marker
                     coordinate={{
                         latitude: origin.geometry.lat,
@@ -34,35 +50,47 @@ export const RoutePresenter = ({navigation, initialRegion, mode, setMode, destin
                 />
             </MapView>
           <View style={{padding:20, flexDirection: "row", justifyContent: "center"}}>
-              <View style={[styles.margin]}><Button onPress={() => setMode("driving")}
-                                                    color={mode === "driving" ? "green": ""} title={"Driving"}/></View>
               <View style={[styles.margin]}>
                   <Button
-                      color={mode === "bicycling" ? "green": ""}
-                      onPress={() => setMode("bicycling")} title={"Bicycling"}/></View>
+                      disabled={loading}
+                      onPress={() => setMode("car")}
+                      color={mode === "car" ? "green": ""} title={"Driving"}/></View>
               <View style={[styles.margin]}>
                   <Button
-                      color={mode === "transit" ? "green": ""}
-                      onPress={() => setMode("transit")} title={"Transit"}/></View>
+                      disabled={loading}
+                      color={mode === "bike" ? "green": ""}
+                      onPress={() => setMode("bike")} title={"Bicycling"}/></View>
               <View style={[styles.margin]}>
                   <Button
-                      color={mode === "walking" ? "green": ""}
-                      onPress={() => setMode("walking")} title={"Walking"}/></View>
+                      disabled={loading}
+                      color={mode === "truck" ? "green": ""}
+                      onPress={() => setMode("truck")} title={"Transit"}/></View>
+              <View style={[styles.margin]}>
+                  <Button
+                      disabled={loading}
+                      color={mode === "foot" ? "green": ""}
+                      onPress={() => setMode("foot")} title={"Walking"}/></View>
           </View>
-            <View style={{flexDirection: "row", justifyContent: "space-around", alignItems: "center"}}>
-                <Text>Destination</Text>
-                {/*TODO format string incase its long*/}
+            {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            { error &&
+                <View style={{justifyContent: "space-around", alignItems: "center", marginBottom: 8}}>
+                    <Text id={"error-message"} style={{fontWeight: "bold", color: 'red'}}>
+                        Something Went wrong Please Try again Later
+                    </Text>
+                </View>
+            }
+            <View style={{justifyContent: "space-around", alignItems: "center", marginBottom: 8}}>
+                <Text style={{fontWeight: "bold"}}>DESTINATION</Text>
                 <Text>{destination.formatted}</Text>
             </View>
 
-            <View style={{flexDirection: "row", justifyContent: "space-around",alignItems: "center" }}>
-                <Text style={{fontWeight: "bold"}}>Origin</Text>
-                {/*TODO format string incase its long*/}
+            <View style={{justifyContent: "space-around",alignItems: "center",marginBottom: 8 }}>
+                <Text style={{fontWeight: "bold"}}>ORIGIN</Text>
                 <Text>{origin.formatted}</Text>
             </View>
 
-            <View style={{flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-                <Text style={{fontWeight: "bold"}}>Mode</Text>
+            <View style={{justifyContent: "space-around", alignItems: "center", marginBottom: 8 }}>
+                <Text style={{fontWeight: "bold"}}>MODE</Text>
                 <Text>{mode}</Text>
             </View>
         </View>
