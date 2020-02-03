@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from "react";
 import { DestinationPresenter } from "../presenters";
-import {AppContext} from "../../App";
+import { AppContext } from "../../App";
 import geo from "opencage-api-client";
-import {openCageApiKey} from "../config";
+import { openCageApiKey } from "../config";
 
 export const DestinationContainer = props => {
     const context = useContext(AppContext);
@@ -21,6 +21,7 @@ export const DestinationContainer = props => {
         }
         context.destination = destination;
     }, [destination]);
+
     return (
         <DestinationPresenter
             {...props}

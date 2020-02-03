@@ -32,4 +32,5 @@ describe("<OriginContainer/>", () => {
     });
     expect(geo.geocode).toHaveBeenCalled();
    });
+
 });

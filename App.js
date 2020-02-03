@@ -5,6 +5,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { DestinationContainer, OriginContainer, RouteContainer } from "./src/containers";
 
+console.disableYellowBox = true;
 
 export const AppContext = React.createContext({
   origin: {},
