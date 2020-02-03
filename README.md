@@ -1,13 +1,13 @@
 # Route Generate
 An application that helps to show you a route basing on your mode of transportation 
 
-####Dependencies
+#### Dependencies
 - [React Native](https://facebook.github.io/react-native/)
 - [Expo](https://expo.io/)
 - [opencagedata API](opencagedata.com)
 - [Graphhopper Api](https://graphhopper.com)
 
-####Setup
+#### Setup
 - git clone `https://github.com/MuhweziDeo/route-maker.git`
 - cd `route-maker`
 - Run  `yarn install` to add dependencies
@@ -16,7 +16,7 @@ An application that helps to show you a route basing on your mode of transportat
 - create a graphhopper account from [here](https://graphhopper.com) and get API key
 - add the keys to `.env file`
 
-###Demo
+### Demo
 [Demo link](https://giphy.com/gifs/SXmEufIMYz5amwgRXo/fullscreen)
 
 
