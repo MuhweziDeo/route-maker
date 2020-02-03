@@ -32,6 +32,7 @@ export const RoutePresenter = ({ mode, setMode, destination, origin, coordinates
                         longitude: destination.geometry.lng
                     }}
                     pinColor="red"
+                    title={destination.formatted}
                 />
 
                 { coordinates.length > 0 &&
@@ -46,7 +47,8 @@ export const RoutePresenter = ({ mode, setMode, destination, origin, coordinates
                         latitude: origin.geometry.lat,
                         longitude: origin.geometry.lng
                     }}
-                    pinColor="red"
+                    pinColor="green"
+                    title={origin.formatted}
                 />
             </MapView>
           <View style={{padding:20, flexDirection: "row", justifyContent: "center"}}>

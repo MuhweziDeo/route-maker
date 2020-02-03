@@ -11,6 +11,7 @@ export const RouteContainer = props => {
     const[loading, setLoading] = useState(false);
     const context = useContext(AppContext);
     const[error, setError] =useState(false);
+
     const loadLocation = async() => {
       const location = await Location.getCurrentPositionAsync();
       setLocation({latitude: location.coords.latitude,
