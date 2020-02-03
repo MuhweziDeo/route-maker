@@ -15,13 +15,13 @@ export const AppContext = React.createContext({
 
 const AppNavigator = createStackNavigator({
   Origin: {
-    screen: () => <OriginContainer/>,
+    screen: (props) => <OriginContainer {...props}/>,
   },
   Destination: {
-    screen: () => <DestinationContainer/>
+    screen: (props) => <DestinationContainer {...props} />
   },
   Map: {
-    screen: () => <RouteContainer/>
+    screen: (props) => <RouteContainer {...props}/>
   }
 }, {initialRouteName: "Origin"});
 
